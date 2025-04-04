@@ -537,7 +537,7 @@ body {
 }
 
 .next {
-    right: 0;
+    right: 40px;
     border-radius: 3px 0 0 3px;
 }
 
@@ -1180,7 +1180,7 @@ body {
 .payment__label {
 	display: block;
 	width: 100%;
-	max-width: 432px;
+	max-width: 592px;
 	margin: 0px 0px 50px 0px;
 }
 
