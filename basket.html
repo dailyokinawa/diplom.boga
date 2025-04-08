@@ -56,72 +56,75 @@
                 <div class="delivery__container container">
                     <div class="delivery__inner">
                         <h2 class="delivery__title title">Доставка</h2>
-                        <form action="#" class="delivery__form">
-                            <div class="delivery__form-row">
-                                <label class="delivery__form-label">
-                                    <input type="text" name="адрес" class="delivery__form-input"
-                                        required placeholder="Укажите адрес (ул.)">
-                                </label>
-                            </div>
-                            <div class="delivery__form-row">
-                                <label class="delivery__form-label delivery__form-label-min">
-                                    <input type="text" name="№ квартиры / офиса" class="delivery__form-input"
-                                        required placeholder="№ квартиры / офиса">
-                                </label>
-                                <label class="delivery__form-label delivery__form-label-min">
-                                    <input type="text" name="Подъезд" class="delivery__form-input"
-                                        required placeholder="Подъезд">
-                                </label>
-                                <label class="delivery__form-label delivery__form-label-min">
-                                    <input type="text" name="Этаж" class="delivery__form-input" required placeholder="Этаж">
-                                </label>
-                            </div>
-                            <div class="delivery__form-row">
-                                <label class="delivery__form-label delivery__form-label-min">
-                                    <input type="text" name="телефон" class="delivery__form-input"
-                                        required placeholder="8 (9__) ___-__-__">
-                                </label>
-                                <label class="delivery__form-label delivery__form-label-long">
-                                    <input type="text" name="имя" class="delivery__form-input"
-                                        required placeholder="Укажите ваше имя">
-                                </label>
-                            </div>
-                            <div class="delivery__form-row">
-                                <textarea name="message" class="delivery__form-textarea"
-                                    required placeholder="Комментарий курьеру..."></textarea>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </section>
-            <section class="page__payment">
-                <div class="payment__container container">
-                    <div class="payment__inner">
-                        <h2 class="payment__title title">Оплата</h2>
-                        <div class="payment__tabs">
-                            <div class="payment__tab">Наличными</div>
-                            <div class="payment__tab">Онлайн оплата</div>
-                            <div class="payment__tab">Картой при получении</div>
-                        </div>
-                        <form action="#" class="payment__form">
-                            <label class="payment__label">
-                                <input type="text" name="email" class="payment__input" required placeholder="Эл. почта">
-                            </label>
-                            <div class="payment__form-check">
-                                <input type="checkbox" id="check" class="payment__form-checkbox">
-                                <label for="check" class="payment__form-check-label"><a href="personal_data.html" target="_blank">Соглашаюсь на обработку персональных данных</a>
-                                </label>
-                            </div>
-                            <div class="payment__form-content">
-                                <div class="payment__form-content-head">
-                                    <p class="payment__form-content-text">Доставка: бесплатно</p>
-                                    <p class="payment__form-content-text">Доставим в течение часа</p>
+                        <form action="./php/save_payment.php" method="POST">
+                            <!-- Поля доставки -->
+                            <div class="delivery__form">
+                                <div class="delivery__form-row">
+                                    <label class="delivery__form-label">
+                                        <input type="text" name="адрес" class="delivery__form-input" required placeholder="Укажите адрес (ул.)">
+                                    </label>
                                 </div>
-                                <div class="payment__form-cost">
-                                    <p class="payment__form-cost-text">К оплате:</p>
-                                    <span class="payment__form-cost-value">0₽</span>
+                                <div class="delivery__form-row">
+                                    <label class="delivery__form-label delivery__form-label-min">
+                                        <input type="text" name="№ квартиры / офиса" class="delivery__form-input" required placeholder="№ квартиры / офиса">
+                                    </label>
+                                    <label class="delivery__form-label delivery__form-label-min">
+                                        <input type="text" name="Подъезд" class="delivery__form-input" required placeholder="Подъезд">
+                                    </label>
+                                    <label class="delivery__form-label delivery__form-label-min">
+                                        <input type="text" name="Этаж" class="delivery__form-input" required placeholder="Этаж">
+                                    </label>
                                 </div>
-                                <button class="payment__form-btn" type="submit">Оплатить</button>
+                                <div class="delivery__form-row">
+                                    <label class="delivery__form-label delivery__form-label-min">
+                                        <input type="text" name="телефон" class="delivery__form-input" required placeholder="8 (9__) ___-__-__">
+                                    </label>
+                                    <label class="delivery__form-label delivery__form-label-long">
+                                        <input type="text" name="имя" class="delivery__form-input" required placeholder="Укажите ваше имя">
+                                    </label>
+                                </div>
+                                <div class="delivery__form-row">
+                                    <textarea name="message" class="delivery__form-textarea" required placeholder="Комментарий курьеру..."></textarea>
+                                </div>
+                            </div>
+            
+                            <!-- Поля оплаты -->
+                            <div class="payment__section">
+                                <h2 class="payment__title title">Оплата</h2>
+                                <div class="payment__tabs">
+                                    <label class="payment__tab">
+                                        <input type="radio" name="payment_method" value="Наличными" required>
+                                        <span>Наличными</span>
+                                    </label>
+                                    <label class="payment__tab">
+                                        <input type="radio" name="payment_method" value="Онлайн оплата" required>
+                                        <span>Онлайн оплата</span>
+                                    </label>
+                                    <label class="payment__tab">
+                                        <input type="radio" name="payment_method" value="Картой при получении" required>
+                                        <span>Картой при получении</span>
+                                    </label>
+                                </div>
+                                <label class="payment__label">
+                                    <input type="text" name="email" class="payment__input" required placeholder="Эл. почта">
+                                </label>
+                                <div class="payment__form-check">
+                                    <input type="checkbox" id="check" class="payment__form-checkbox" required>
+                                    <label for="check" class="payment__form-check-label">
+                                        <a href="personal_data.html" target="_blank">Соглашаюсь на обработку персональных данных</a>
+                                    </label>
+                                </div>
+                                <div class="payment__form-content">
+                                    <div class="payment__form-content-head">
+                                        <p class="payment__form-content-text">Доставка: бесплатно</p>
+                                        <p class="payment__form-content-text">Доставим в течение часа</p>
+                                    </div>
+                                    <div class="payment__form-cost">
+                                        <p class="payment__form-cost-text">К оплате:</p>
+                                        <span class="payment__form-cost-value">0₽</span>
+                                    </div>
+                                    <button class="payment__form-btn" type="submit">Оплатить</button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -142,7 +145,7 @@
                                         </a>
                                     </li>
                                     <li class="footer__column-item">
-                                        <a href="#" class="footer__column-item-link">Бронь</a>
+                                        <a href="serve.html" class="footer__column-item-link">Бронь</a>
                                     </li>
                                     <li class="footer__column-item">
                                         <a href="basket.html" class="footer__column-item-link">Корзина</a>
