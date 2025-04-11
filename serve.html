@@ -41,28 +41,25 @@
             <div class="serve__container container">
                 <div class="serve__inner">
                     <h2 class="title-serve title">Для брони заполните форму</h2>
-                    <form action="#" class="serve__form">
+                    <form id="serveForm" action="./php/save_reserve.php" method="POST" class="serve__form">
                         <div class="serve__form-row">
                             <label class="serve__form-label">
-                                <input type="text" name="фио" class="serve__form-input"
-                                       required placeholder="Укажите ФИО">
+                                <input type="text" name="фио" class="serve__form-input" required placeholder="Укажите ФИО">
                             </label>
                         </div>
                         <div class="serve__form-row">
                             <label class="serve__form-label">
-                                <input type="text" name="номер" class="serve__form-input"
-                                       required placeholder="Укажите номер телефона">
+                                <input type="text" name="номер" class="serve__form-input" required placeholder="Укажите номер телефона">
                             </label>
                         </div>
                         <div class="serve__form-row">
                             <label class="serve__form-label">
-                                <input type="number" name="человек" class="serve__form-input"
-                                       required placeholder="Укажите количество человек" min="1">
+                                <input type="number" name="человек" class="serve__form-input" required placeholder="Укажите количество человек" min="1">
                             </label>
                         </div>
                         <div class="serve__form-row">
                             <label class="serve__form-label">
-                                <input type="datetime-local" id="datetime" class="serve__form-input" required placeholder="Выберите дату и время">
+                                <input type="datetime-local" name="дата" id="datetime" class="serve__form-input" required placeholder="Выберите дату и время" value="2025-04-12T12:00">
                             </label>
                         </div>
                         <div class="serve__form-row">
@@ -82,8 +79,7 @@
                         </div>
                         <button class="serve__form-btn" type="submit">Забронировать</button>
                     </form>
-                </div>
-            </div>
+                    <div id="serveMessage" class="serve__message"></div>
         </section>
         <footer class="footer">
             <div class="footer__container container">
@@ -208,6 +204,33 @@
     </div>
 
     <script src="./js/script.js"></script>
+
+    <script>
+        document.getElementById('serveForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Предотвращаем стандартное поведение формы
+    
+            const form = e.target;
+            const formData = new FormData(form);
+    
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                // Отображаем сообщение об успехе или ошибке
+                const messageDiv = document.getElementById('serveMessage');
+                messageDiv.textContent = result;
+                messageDiv.style.color = 'green'; // Успешное сообщение
+            })
+            .catch(error => {
+                // Обрабатываем ошибки
+                const messageDiv = document.getElementById('serveMessage');
+                messageDiv.textContent = 'Произошла ошибка. Попробуйте снова.';
+                messageDiv.style.color = 'red'; // Сообщение об ошибке
+            });
+        });
+    </script>
 
 </body>
 

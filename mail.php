@@ -1,55 +1,52 @@
 <?php
-// Файлы phpmailer
 require 'phpmailer/PHPMailer.php';
 require 'phpmailer/SMTP.php';
 require 'phpmailer/Exception.php';
+require 'php/subscriptiondb.php';
 
-$title = "Тема письма";
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
+    $email = trim($_POST['email']);
 
-$c = true;
-// Формирование самого письма
-$title = "Заголовок письма";
-foreach ( $_POST as $key => $value ) {
-  if ( $value != "" && $key != "project_name" && $key != "admin_email" && $key != "form_subject" ) {
-    $body .= "
-    " . ( ($c = !$c) ? '<tr>':'<tr style="background-color: #f8f8f8;">' ) . "
-      <td style='padding: 10px; border: #e9e9e9 1px solid;'><b>$key</b></td>
-      <td style='padding: 10px; border: #e9e9e9 1px solid;'>$value</td>
-    </tr>
-    ";
-  }
+    // Проверяем, что email не пустой
+    if (!empty($email)) {
+        // Сохраняем email в базу данных
+        $query = "INSERT INTO Subscriptions (Email) VALUES (?)";
+        $params = [$email];
+        $stmt = sqlsrv_query($conn, $query, $params);
+
+        if ($stmt === false) {
+            die(print_r(sqlsrv_errors(), true));
+        }
+
+        // Отправляем письмо
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+        $mail->isSMTP();
+        $mail->CharSet = "UTF-8";
+        $mail->SMTPAuth = true;
+
+        // Настройки вашей почты
+        $mail->Host = 'smtp.yandex.ru';
+        $mail->Username = 'dailyweeknd@yandex.ru';
+        $mail->Password = '';
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port = 465;
+        $mail->setFrom('dailyweeknd@yandex.ru', 'Lost Heaven');
+
+        // Получатель письма
+        $mail->addAddress($email);
+
+        // Отправка сообщения
+        $mail->isHTML(true);
+        $mail->Subject = "Благодарим за подписку!";
+        $mail->Body = "<h2>Спасибо за подписку на рассылку Lost Heaven!</h2>";
+
+        if ($mail->send()) {
+            echo "Подписка успешно оформлена!";
+        } else {
+            echo "Ошибка при отправке письма: {$mail->ErrorInfo}";
+        }
+    } else {
+        echo "Ошибка: Email не указан.";
+    }
 }
-
-$body = "<table style='width: 100%;'>$body</table>";
-
-// Настройки PHPMailer
-$mail = new PHPMailer\PHPMailer\PHPMailer();
-
-try {
-  $mail->isSMTP();
-  $mail->CharSet = "UTF-8";
-  $mail->SMTPAuth   = true;
-
-  // Настройки вашей почты
-  $mail->Host       = 'ssl://smtp.yandex.ru'; // SMTP сервера вашей почты
-  $mail->Username   = 'lostheavencafe@yandex.ru'; // Логин на почте
-  $mail->Password   = ''; // Пароль на почте
-  $mail->SMTPSecure = 'ssl';
-  $mail->Port       = 465;
-
-  $mail->setFrom('lostheavencafe@yandex.ru', 'Заявка с сайта Lost Heaven'); // Адрес самой почты и имя отправителя
-
-  // Получатель письма
-  $myVar = $_POST['email'];
-  $mail->addAddress(echo $myVar);
-
-  // Отправка сообщения
-  $mail->isHTML(true);
-  $mail->Subject = $title;
-  $mail->Body = $body;
-
-  $mail->send();
-
-} catch (Exception $e) {
-  $status = "Сообщение не было отправлено. Причина ошибки: {$mail->ErrorInfo}";
-}
+?>
